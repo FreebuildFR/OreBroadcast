@@ -42,7 +42,7 @@ public class OreBroadcast extends JavaPlugin {
             @Override
             public void execute(CommandSender sender, List<String> args) {
                 int size = clearBlackList();
-                sender.sendMessage(size + " block" + (size > 1 ? "s" : "")  + " cleared...");
+                sender.sendMessage(size + " block" + (size > 1 ? "s" : "") + " cleared...");
             }
         });
 
@@ -57,18 +57,18 @@ public class OreBroadcast extends JavaPlugin {
         commandHandler.register(new Command("update", "Checks/Updates OreBroadcast version - Usage: update <check|update>", "ob.commands.update") {
             @Override
             public void execute(CommandSender sender, List<String> args) {
-                if(args.size() < 1) {
+                if (args.size() < 1) {
                     sender.sendMessage("Not enough arguments");
                     return;
                 }
-                if(config.getUpdater().isUpdated()) {
+                if (config.getUpdater().isUpdated()) {
                     sender.sendMessage("An update has already been downloaded, restart the server to apply it");
                     return;
                 }
 
-                if(args.get(0).equalsIgnoreCase("check")) {
+                if (args.get(0).equalsIgnoreCase("check")) {
                     config.getUpdater().checkUpdate(sender, false);
-                    if(config.getUpdater().isUpdateAvailable()) {
+                    if (config.getUpdater().isUpdateAvailable()) {
                         sender.sendMessage("Update available");
                     } else {
                         sender.sendMessage("No update available");
@@ -76,7 +76,7 @@ public class OreBroadcast extends JavaPlugin {
                     return;
                 }
 
-                if(args.get(0).equalsIgnoreCase("download")) {
+                if (args.get(0).equalsIgnoreCase("download")) {
                     config.getUpdater().checkUpdate(sender, true);
                 }
             }
@@ -85,12 +85,12 @@ public class OreBroadcast extends JavaPlugin {
         commandHandler.register(new Command("optout", "Toggles OreBroadcast messages for yourself", "ob.commands.optout") {
             @Override
             public void execute(CommandSender sender, List<String> args) {
-                if(!(sender instanceof Player)) {
+                if (!(sender instanceof Player)) {
                     sender.sendMessage(ChatColor.RED + "Only players can optout");
                     return;
                 }
                 UUID uuid = ((Player) sender).getUniqueId();
-                if(config.isOptOut(uuid)) {
+                if (config.isOptOut(uuid)) {
                     config.unOptOutPlayer(uuid);
                     sender.sendMessage("You will now receive the ore broadcasts");
                 } else {
@@ -119,8 +119,7 @@ public class OreBroadcast extends JavaPlugin {
     }
 
     /**
-     * Blacklists a block. Blocks blacklisted won't get broadcasted when
-     * broken.
+     * Blacklists a block. Blocks blacklisted won't get broadcasted when broken.
      *
      * @param block the block to blacklist
      */
@@ -129,13 +128,13 @@ public class OreBroadcast extends JavaPlugin {
     }
 
     /**
-     * Blacklists multiple blocks. Blocks blacklisted won't get broadcasted
-     * when broken.
+     * Blacklists multiple blocks. Blocks blacklisted won't get broadcasted when
+     * broken.
      *
      * @param blocks the blocks to blacklist
      */
     public void blackList(Collection<Block> blocks) {
-        for(Block block : blocks) {
+        for (Block block : blocks) {
             blackList(block);
         }
     }
@@ -155,7 +154,7 @@ public class OreBroadcast extends JavaPlugin {
      * @param blocks the blocks to unblacklist
      */
     public void unBlackList(Collection<Block> blocks) {
-        for(Block block : blocks) {
+        for (Block block : blocks) {
             unBlackList(block);
         }
     }

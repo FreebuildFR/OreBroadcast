@@ -15,7 +15,7 @@ import java.util.Map;
 public class CommandHandler implements CommandExecutor, TabCompleter {
 
     private final Map<String, Command> commands;
-    private final String               cmdName;
+    private final String cmdName;
 
     public CommandHandler(JavaPlugin plugin, String command) {
         commands = new HashMap<>();
@@ -32,14 +32,14 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
     }
 
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command cmd, String label, String[] args) {
-        if(!cmd.getName().equals(cmdName) || args.length < 1) {
+        if (!cmd.getName().equals(cmdName) || args.length < 1) {
             return false;
         }
         Command command = commands.get(args[0]);
-        if(command == null) {
+        if (command == null) {
             return false;
         }
-        if(command.hasPermission(sender)) {
+        if (command.hasPermission(sender)) {
             List<String> argList = Arrays.asList(args).subList(1, args.length);
             commands.get(args[0]).execute(sender, argList);
         } else {
@@ -50,16 +50,16 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, org.bukkit.command.Command cmd, String label, String[] args) {
-        if(!cmd.getName().equals(cmdName) || args.length > 1) {
+        if (!cmd.getName().equals(cmdName) || args.length > 1) {
             return null;
         }
         List<String> results = new LinkedList<>();
         boolean ignoreArg = false;
-        if(args.length == 0) {
+        if (args.length == 0) {
             ignoreArg = true;
         }
-        for(Command command : commands.values()) {
-            if(command.hasPermission(sender) && (ignoreArg || command.getName().startsWith(args[0]))) {
+        for (Command command : commands.values()) {
+            if (command.hasPermission(sender) && (ignoreArg || command.getName().startsWith(args[0]))) {
                 results.add(command.getName());
             }
         }

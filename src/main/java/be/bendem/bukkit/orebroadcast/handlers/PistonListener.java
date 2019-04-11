@@ -14,8 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This is necessary because people are dumb enough to use pistons to
- * change block position and retrigger a broadcast
+ * This is necessary because people are dumb enough to use pistons to change
+ * block position and retrigger a broadcast
  *
  * @author bendem
  */
@@ -32,14 +32,14 @@ public class PistonListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPistonRetract(BlockPistonRetractEvent e) {
         // Workaround start - BlockPistonEvent's are sometime called multiple times
-        if(!pistonUtil.canRetract(e.getBlock())) {
+        if (!pistonUtil.canRetract(e.getBlock())) {
             return;
         }
         pistonUtil.retract(e.getBlock());
         // Workaround end
 
         Block blockMoving = e.getRetractLocation().getBlock();
-        if(!e.isSticky() || !plugin.isWhitelisted(blockMoving.getType()) || !plugin.isWorldWhitelisted(e.getBlock().getWorld())) {
+        if (!e.isSticky() || !plugin.isWhitelisted(blockMoving.getType()) || !plugin.isWorldWhitelisted(e.getBlock().getWorld())) {
             return;
         }
 
@@ -50,21 +50,20 @@ public class PistonListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPistonExtend(BlockPistonExtendEvent e) {
         // Workaround start - BlockPistonEvent's are sometime called multiple times
-        if(!pistonUtil.canExtend(e.getBlock())) {
+        if (!pistonUtil.canExtend(e.getBlock())) {
             return;
         }
         pistonUtil.extend(e.getBlock());
         // Workaround end
 
-        if(!plugin.isWorldWhitelisted(e.getBlock().getWorld())
-                || e.getBlock().getRelative(e.getDirection()).getType() == Material.AIR) {
+        if (!plugin.isWorldWhitelisted(e.getBlock().getWorld()) || e.getBlock().getRelative(e.getDirection()).getType() == Material.AIR) {
             return;
         }
 
         java.util.List<Block> blocks = e.getBlocks();
-        for(int i = blocks.size() - 1; i >= 0; i--) {
+        for (int i = blocks.size() - 1; i >= 0; i--) {
             Block block = blocks.get(i);
-            if(plugin.isWhitelisted(block.getType()) && plugin.isBlackListed(block)) {
+            if (plugin.isWhitelisted(block.getType()) && plugin.isBlackListed(block)) {
                 plugin.unBlackList(block);
                 plugin.blackList(block.getRelative(e.getDirection()));
             }
@@ -73,7 +72,7 @@ public class PistonListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPistonBreak(BlockBreakEvent e) {
-        if(e.getBlock().getType() == Material.PISTON_BASE || e.getBlock().getType() == Material.PISTON_STICKY_BASE) {
+        if (e.getBlock().getType() == Material.PISTON_BASE || e.getBlock().getType() == Material.PISTON_STICKY_BASE) {
             pistonUtil.remove(e.getBlock());
         }
     }

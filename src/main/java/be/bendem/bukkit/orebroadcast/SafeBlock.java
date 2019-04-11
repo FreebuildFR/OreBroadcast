@@ -9,13 +9,14 @@ import java.util.UUID;
 /**
  * SafeBlock contains informations about a block but doesn't prevents world
  * unloading (it doesn't contain informations about the server's worlds)
+ * 
  * @author bendem
  */
 public class SafeBlock {
 
-    public final int  x;
-    public final int  y;
-    public final int  z;
+    public final int x;
+    public final int y;
+    public final int z;
     public final UUID world;
 
     public SafeBlock(Block block) {
@@ -36,17 +37,14 @@ public class SafeBlock {
 
     @Override
     public boolean equals(Object o) {
-        if(this == o) {
+        if (this == o) {
             return true;
         }
-        if(!(o instanceof SafeBlock)) {
+        if (!(o instanceof SafeBlock)) {
             return false;
         }
         SafeBlock safeBlock = (SafeBlock) o;
-        return x == safeBlock.x
-                && y == safeBlock.y
-                && z == safeBlock.z
-                && world.equals(safeBlock.world);
+        return x == safeBlock.x && y == safeBlock.y && z == safeBlock.z && world.equals(safeBlock.world);
     }
 
     @Override

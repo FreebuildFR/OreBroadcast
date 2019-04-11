@@ -20,10 +20,10 @@ public class HelpCommand extends Command {
     @Override
     public void execute(CommandSender sender, List<String> args) {
         StringBuilder builder = new StringBuilder("OreBroadcast commands: \n");
-        for(Command command : handler.getCommands().values()) {
-            if(command.hasPermission(sender)) {
+        for (Command command : handler.getCommands().values()) {
+            if (command.hasPermission(sender)) {
                 builder.append("- ").append(ChatColor.BLUE).append(command.getName()).append(ChatColor.RESET);
-                if(command.getDescription() != null) {
+                if (command.getDescription() != null) {
                     builder.append(": ").append(command.getDescription());
                 }
                 builder.append('\n');

@@ -17,7 +17,7 @@ public class OreBroadcastEvent extends Event implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
 
-    private       String format;
+    private String format;
     private final Player source;
     private final Block blockMined;
     private final Set<Player> recipients;
@@ -42,8 +42,7 @@ public class OreBroadcastEvent extends Event implements Cancellable {
     }
 
     /**
-     * Gets the format of the message.
-     * This format can contain:
+     * Gets the format of the message. This format can contain:
      * <ul>
      * <li>{player_name}</li>
      * <li>{real_player_name}</li>
@@ -99,9 +98,9 @@ public class OreBroadcastEvent extends Event implements Cancellable {
     }
 
     /**
-     * Gets the vein of blocks corresponding to that message (you can
-     * modify that Set to reduce the size. Note that removed block
-     * won't get blacklisted and will then be broadcasted when broken).
+     * Gets the vein of blocks corresponding to that message (you can modify
+     * that Set to reduce the size. Note that removed block won't get
+     * blacklisted and will then be broadcasted when broken).
      *
      * @return the vein
      */
@@ -120,10 +119,9 @@ public class OreBroadcastEvent extends Event implements Cancellable {
     }
 
     /**
-     * Sets the cancellation state of the event
-     * (If you cancel the event, the blocks of the vein will be broadcasted
-     * next time a block of the vein is broken)
-     * See {@link OreBroadcast#blackList(Block)} to blacklist blocks
+     * Sets the cancellation state of the event (If you cancel the event, the
+     * blocks of the vein will be broadcasted next time a block of the vein is
+     * broken) See {@link OreBroadcast#blackList(Block)} to blacklist blocks
      * independently.
      *
      * @param cancel the new cancellation state

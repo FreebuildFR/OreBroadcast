@@ -18,9 +18,7 @@ public class BlockPlaceListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent e) {
         Block block = e.getBlock();
-        if(plugin.isWhitelisted(block.getType()) && plugin.isWorldWhitelisted(block.getWorld().getName()) && !plugin.isBlackListed(block)
-                && (e.getPlayer().getGameMode() != GameMode.CREATIVE
-                    || !plugin.getConfig().getBoolean("broadcast-creative-placed-blocks", true))) {
+        if (plugin.isWhitelisted(block.getType()) && plugin.isWorldWhitelisted(block.getWorld().getName()) && !plugin.isBlackListed(block) && (e.getPlayer().getGameMode() != GameMode.CREATIVE || !plugin.getConfig().getBoolean("broadcast-creative-placed-blocks", true))) {
             plugin.blackList(block);
         }
     }
