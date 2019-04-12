@@ -3,9 +3,10 @@ package be.bendem.bukkit.orebroadcast.handlers;
 import be.bendem.bukkit.orebroadcast.OreBroadcast;
 import be.bendem.bukkit.orebroadcast.OreBroadcastEvent;
 import be.bendem.bukkit.orebroadcast.OreBroadcastException;
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -36,11 +37,6 @@ public class BlockBreakListener implements Listener {
         }
 
         Block block = event.getBlock();
-        // Don't broadcast blacklisted blocks
-        if (plugin.isBlackListed(block)) {
-            plugin.unBlackList(block);
-            return;
-        }
         if (!plugin.isWhitelisted(block.getType())) {
             return;
         }
@@ -57,7 +53,7 @@ public class BlockBreakListener implements Listener {
         // Get recipients
         Set<Player> recipients = new HashSet<>();
         for (Player onlinePlayer : plugin.getServer().getOnlinePlayers()) {
-            if (onlinePlayer.hasPermission("ob.receive") && !plugin.isOptOut(onlinePlayer)) {
+            if (onlinePlayer.hasPermission("ob.receive")) {
                 recipients.add(onlinePlayer);
             }
         }
@@ -72,12 +68,7 @@ public class BlockBreakListener implements Listener {
         plugin.blackList(e.getVein());
         plugin.unBlackList(e.getBlockMined());
 
-        String blockName;
-        if (e.getBlockMined().getType() == Material.GLOWING_REDSTONE_ORE) {
-            blockName = "redstone";
-        } else {
-            blockName = e.getBlockMined().getType().name().toLowerCase().replace("_ore", "");
-        }
+        String blockName = e.getBlockMined().getType().name().toLowerCase().replace("_ore", "");
 
         String color = plugin.getConfig().getString("colors." + blockName, "white").toUpperCase();
         String formattedMessage = format(e.getFormat(), e.getSource(), e.getVein().size(), blockName, color, e.getVein().size() > 1);
@@ -110,7 +101,7 @@ public class BlockBreakListener implements Listener {
                 for (k = -1; k < 2; ++k) {
                     Block relative = block.getRelative(i, j, k);
                     if (!vein.contains(relative) // block already found
-                            && equals(block, relative) // block has not the same type
+                            && block.getType() == relative.getType() // block has the same type
                             && (i != 0 || j != 0 || k != 0) // comparing block to itself
                             && !plugin.isBlackListed(relative)) {// don't consider blacklisted blocks
                         vein.add(relative);
@@ -121,15 +112,12 @@ public class BlockBreakListener implements Listener {
         }
     }
 
-    // Workaround for redstone ores
-    private boolean equals(Block block1, Block block2) {
-        return block1.getType().equals(block2.getType()) || block1.getType() == Material.GLOWING_REDSTONE_ORE && block2.getType() == Material.REDSTONE_ORE || block1.getType() == Material.REDSTONE_ORE && block2.getType() == Material.GLOWING_REDSTONE_ORE;
-    }
-
     private void broadcast(Set<Player> recipients, String message) {
         for (Player recipient : recipients) {
             recipient.sendMessage(message);
         }
+        
+        Bukkit.getConsoleSender().sendMessage(message);
     }
 
     private String format(String msg, Player player, int count, String ore, String color, boolean plural) {
@@ -137,7 +125,7 @@ public class BlockBreakListener implements Listener {
     }
 
     private String translateOre(String ore, String color) {
-        return "&" + ChatColor.valueOf(color).getChar() + plugin.getConfig().getString("ore-translations." + ore, ore);
+        return "&" + ChatColor.valueOf(color).getChar() + ChatColor.BOLD + plugin.getConfig().getString("ore-translations." + ore, ore);
     }
 
 }

@@ -1,7 +1,7 @@
 name: OreBroadcaster
 main: be.bendem.bukkit.orebroadcast.OreBroadcast
 version: maven-version-number
-author: bendem
+authors: [bendem, graywolf336]
 description: Send messages to other players when you find ores.
 api-version: 1.13
 
@@ -10,36 +10,21 @@ commands:
         usage: |
             OreBroadcast command. Type '/ob help' for more informations
         description: OreBroadcast commands
+        permission: ob.commands.reload
 
 permissions:
     ob.*:
         description: Give access to all OreBroadcast functionalities
         children:
-            ob.commands.*: true
             ob.broadcast: true
             ob.receive: true
-            ob.update.notification: true
-    ob.commands.*:
-        description: Give access to all the plugin commands
-        children:
             ob.commands.reload: true
-            ob.commands.clear: true
-            ob.commands.update: true
     ob.commands.reload:
         description: Players with this permission can reload the config
-        default: op
-    ob.commands.clear:
-        description: Players with this permission can clear the blacklist
-        default: op
-    ob.commands.optout:
-        description: Players with this permission can opt out from the plugin broadcasts
         default: op
     ob.broadcast:
         description: Players with this permission will send messages when they find ores.
         default: true
     ob.receive:
         description: Players with this permission will receive OreBroadcast messages.
-        default: op
-    ob.update.notification:
-        description: Will receive a notification on startup if an update is available
         default: op

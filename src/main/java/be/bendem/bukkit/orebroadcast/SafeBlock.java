@@ -13,7 +13,6 @@ import java.util.UUID;
  * @author bendem
  */
 public class SafeBlock {
-
     public final int x;
     public final int y;
     public final int z;

@@ -28,7 +28,7 @@ colors:
 # + The {ore} tag will be replaced by {ore_color}{ore}.
 # + The "player_name" tag is the name of the player as it is set by different plugins,
 #   "real_player_name" is the real pseudo of the player.
-message: "&l{player_name}&r just found &l{count}&r block{plural} of [&l&k{ore}&r]"
+message: "&7[&eO&bR&aE&fS&7] &l{player_name}&r just found &l{count}&r block{plural} of {ore}!"
 
 # The text to add when more than one ore is found (Will be used to replace the {plural} tag).
 plural: s
@@ -57,26 +57,8 @@ active-per-worlds: false
 # (i.e. if mining a big structure made of a block to broadcast).
 max-vein-size: 500
 
-# Block placed in creative will be broadcasted when a player not in creative break them.
-broadcast-creative-placed-blocks: true
-
 # Displays the time the block break handler take in the console.
 timing-debug: false
-
-# Activates metrics. Metrics is a stat utility allowing the developper to get informations
-# about the server running the plugin.
-# This sends java version, plugin version, player count, etc.
-# This DOESN'T send names, chat, list of operators, ips, etc.
-metrics: true
-
-# Activate updater functionnalities (Checks curse api to see if a new update is available)
-updater:
-
-    # Check if a new version is available at startup
-    startup-check: true
-
-    # Warn ops when they connect if a new version is available
-    warn-ops: true
 
 # Colors and color codes available :
 # Use the colors for the ore list and the color codes for the message
