@@ -25,7 +25,7 @@ public class BlockBreakListener implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
         // Reject
@@ -41,11 +41,17 @@ public class BlockBreakListener implements Listener {
             return;
         }
 
+        // Don't broadcast blocks already counted before
+        if (plugin.isBlackListed(block)) {
+            plugin.unBlackList(block);
+            return;
+        }
+
         // Measuring event time
         long timer = System.currentTimeMillis();
 
         Set<Block> vein = getVein(block);
-        if (vein == null || vein.size() < 1) {
+        if (vein == null || vein.isEmpty()) {
             plugin.getLogger().fine("Vein ignored");
             return;
         }
@@ -82,11 +88,13 @@ public class BlockBreakListener implements Listener {
     private Set<Block> getVein(Block block) {
         Set<Block> vein = new HashSet<>();
         vein.add(block);
+
         try {
             getVein(block, vein);
         } catch (OreBroadcastException e) {
             return null;
         }
+
         return vein;
     }
 
@@ -116,7 +124,7 @@ public class BlockBreakListener implements Listener {
         for (Player recipient : recipients) {
             recipient.sendMessage(message);
         }
-        
+
         Bukkit.getConsoleSender().sendMessage(message);
     }
 
@@ -127,5 +135,4 @@ public class BlockBreakListener implements Listener {
     private String translateOre(String ore, String color) {
         return "&" + ChatColor.valueOf(color).getChar() + ChatColor.BOLD + plugin.getConfig().getString("ore-translations." + ore, ore);
     }
-
 }
