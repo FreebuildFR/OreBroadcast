@@ -1,7 +1,8 @@
-name: OreBroadcaster
+name: ${project.name}
 main: be.bendem.bukkit.orebroadcast.OreBroadcast
-version: maven-version-number
-authors: [bendem, graywolf336]
+version: ${project.version}
+author: bendem
+authors: [graywolf336, EpiCanard]
 description: Send messages to other players when you find ores.
 api-version: 1.13
 

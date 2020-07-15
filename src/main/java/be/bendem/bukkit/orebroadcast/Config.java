@@ -7,18 +7,17 @@ import java.util.List;
 import java.util.Set;
 
 public class Config {
-
     private final OreBroadcast plugin;
     private final Set<SafeBlock> broadcastBlacklist = new HashSet<>();
     private final Set<Material> blocksToBroadcast = new HashSet<>();
     private final Set<String> worldWhitelist = new HashSet<>();
     private boolean worldWhitelistActive = false;
-    
+
     protected Config(OreBroadcast plugin) {
         this.plugin = plugin;
         plugin.saveDefaultConfig();
     }
-    
+
     protected void loadConfig() {
         plugin.reloadConfig();
         // Create the list of materials to broadcast from the file
@@ -26,7 +25,7 @@ public class Config {
         blocksToBroadcast.clear();
 
         for (String item : configList) {
-            Material material = Material.getMaterial(item.toUpperCase() + "_ORE");
+            Material material = this.getMaterial(item.toUpperCase());
             blocksToBroadcast.add(material);
         }
 
@@ -52,5 +51,10 @@ public class Config {
 
     protected boolean isWorldWhitelistActive() {
         return worldWhitelistActive;
+    }
+
+    private Material getMaterial(final String materialName) {
+        final Material material = Material.getMaterial(materialName + "_ORE");
+        return (material == null) ? Material.getMaterial(materialName) : material;
     }
 }
