@@ -3,6 +3,7 @@ package be.bendem.bukkit.orebroadcast;
 import be.bendem.bukkit.orebroadcast.commands.Command;
 import be.bendem.bukkit.orebroadcast.commands.CommandHandler;
 import be.bendem.bukkit.orebroadcast.handlers.BlockBreakListener;
+import be.bendem.bukkit.orebroadcast.handlers.PluginMessage;
 
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -35,6 +36,9 @@ public class OreBroadcast extends JavaPlugin {
                 sender.sendMessage("Config reloaded...");
             }
         });
+
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new PluginMessage(this));
     }
 
     /**
@@ -118,5 +122,4 @@ public class OreBroadcast extends JavaPlugin {
     public boolean isWorldWhitelisted(String world) {
         return !config.isWorldWhitelistActive() || config.getWorldWhitelist().contains(world);
     }
-
 }
