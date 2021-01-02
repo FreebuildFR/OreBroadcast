@@ -2,7 +2,7 @@ name: ${project.name}
 main: be.bendem.bukkit.orebroadcast.OreBroadcast
 version: ${project.version}
 author: bendem
-authors: [graywolf336, EpiCanard]
+authors: [graywolf336, EpiCanard, MrFunky16]
 description: Send messages to other players when you find ores.
 api-version: 1.13
 
