@@ -21,9 +21,9 @@ public class BlockBreakListener implements Listener {
     private final OreBroadcast plugin;
     private final PluginMessage pluginMessage;
 
-    public BlockBreakListener(OreBroadcast plugin) {
+    public BlockBreakListener(OreBroadcast plugin, PluginMessage pluginMessage) {
         this.plugin = plugin;
-        pluginMessage = new PluginMessage(plugin);
+        this.pluginMessage = pluginMessage;
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)

@@ -26,7 +26,9 @@ public class OreBroadcast extends JavaPlugin {
         config = new Config(this);
         config.loadConfig();
 
-        getServer().getPluginManager().registerEvents(new BlockBreakListener(this), this);
+        PluginMessage pluginMessage = new PluginMessage(this);
+
+        getServer().getPluginManager().registerEvents(new BlockBreakListener(this, pluginMessage), this);
 
         CommandHandler commandHandler = new CommandHandler(this, "ob");
         commandHandler.register(new Command("reload", "Reloads OreBroadcast config", "ob.commands.reload") {
@@ -38,7 +40,7 @@ public class OreBroadcast extends JavaPlugin {
         });
 
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-        getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new PluginMessage(this));
+        getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", pluginMessage);
     }
 
     /**
