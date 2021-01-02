@@ -4,7 +4,6 @@ import be.bendem.bukkit.orebroadcast.OreBroadcast;
 import be.bendem.bukkit.orebroadcast.OreBroadcastEvent;
 import be.bendem.bukkit.orebroadcast.OreBroadcastException;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.block.Block;
@@ -20,9 +19,11 @@ import java.util.Set;
 public class BlockBreakListener implements Listener {
 
     private final OreBroadcast plugin;
+    private final PluginMessage pluginMessage;
 
-    public BlockBreakListener(OreBroadcast plugin) {
+    public BlockBreakListener(OreBroadcast plugin, PluginMessage pluginMessage) {
         this.plugin = plugin;
+        this.pluginMessage = pluginMessage;
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
@@ -57,12 +58,7 @@ public class BlockBreakListener implements Listener {
         }
 
         // Get recipients
-        Set<Player> recipients = new HashSet<>();
-        for (Player onlinePlayer : plugin.getServer().getOnlinePlayers()) {
-            if (onlinePlayer.hasPermission("ob.receive")) {
-                recipients.add(onlinePlayer);
-            }
-        }
+        Set<Player> recipients = pluginMessage.getRecipients();
 
         OreBroadcastEvent e = new OreBroadcastEvent(plugin.getConfig().getString("message", "{player} just found {count} block{plural} of {ore}"), player, block, recipients, vein);
 
@@ -78,7 +74,8 @@ public class BlockBreakListener implements Listener {
 
         String color = plugin.getConfig().getString("colors." + blockName, "white").toUpperCase();
         String formattedMessage = format(e.getFormat(), e.getSource(), e.getVein().size(), blockName, color, e.getVein().size() > 1);
-        broadcast(e.getRecipients(), formattedMessage);
+        pluginMessage.broadcast(e.getRecipients(), formattedMessage);
+        pluginMessage.forwardMessage(player, formattedMessage);
 
         if (plugin.getConfig().getBoolean("timing-debug", false)) {
             plugin.getLogger().info("Event duration : " + (System.currentTimeMillis() - timer) + "ms");
@@ -118,14 +115,6 @@ public class BlockBreakListener implements Listener {
                 }
             }
         }
-    }
-
-    private void broadcast(Set<Player> recipients, String message) {
-        for (Player recipient : recipients) {
-            recipient.sendMessage(message);
-        }
-
-        Bukkit.getConsoleSender().sendMessage(message);
     }
 
     private String format(String msg, Player player, int count, String ore, String color, boolean plural) {
